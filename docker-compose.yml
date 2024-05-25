@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  zookeeper:
+    container_name: zookeeper-container
+    image: zookeeper
+    ports:
+      - 2181:2181
+  kafka:
+    depends_on:
+      zookeeper:
+        condition: service_started
+    container_name: kafka-container
+    image: confluentinc/cp-kafka
+    ports:
+      - 9092:9092
+    volumes:
+      - ./data/kafka:/var/run/docker.lock
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: ${YOUR_IP}:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${YOUR_IP}:9092
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+  app1:
+    depends_on:
+      kafka:
+        condition: service_started
+    container_name: app1
+    build: ./app1
+    ports:
+      - 8080:8080
+    volumes:
+      - ./app1:/app
+    environment:
+      - PORT=8080
+      - KAFKA_BOOTSTRAP_SERVERS=${YOUR_IP}:9092
+  app2:
+    depends_on:
+      kafka:
+        condition: service_started
+    container_name: app2
+    build: ./app2
+    ports:
+      - 8081:8080
+    volumes:
+      - ./app2:/app
+    environment:
+      - PORT=8080
+      - KAFKA_BOOTSTRAP_SERVERS=${YOUR_IP}:9092
