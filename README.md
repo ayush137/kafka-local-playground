@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  Get started with the Kafka Local Playground by installing <a href="https://www.docker.com/products/docker-desktop/" target="_blank">docker desktop</a> and running <code>docker compose -up</code>
+  Get started with the Kafka Local Playground by installing <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Docker Desktop</a>, adding your IPv4 address in the .env and running <code>docker compose -up</code>
 </p>
 
 <a href="http://www.youtube.com/watch?v=PbjHxIuHduU" target="_blank">
